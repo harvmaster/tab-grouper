@@ -8,6 +8,8 @@ A browser extension for Brave (and other Chromium-based browsers) that automatic
 - Create custom domain patterns using regular expressions
 - Choose custom names and colors for each group
 - Preferences are saved and persisted between browser sessions
+- Advanced auto-pattern templates with dynamic group name extraction
+- Performance optimizations for smooth tab dragging and manipulation
 
 ## Installation
 
@@ -22,10 +24,27 @@ A browser extension for Brave (and other Chromium-based browsers) that automatic
    ```
    npm run build
    ```
-4. Open your Brave browser and navigate to `brave://extensions/`
-5. Enable "Developer mode" in the top right
-6. Click "Load unpacked" and select the extension's root directory
-7. The extension should now be installed and active
+   This will:
+   - Compile the TypeScript code
+   - Bundle assets with webpack
+   - Copy necessary files to the dist directory
+   - Display installation instructions
+
+4. Follow the installation instructions printed in the console:
+   - Open your Brave browser and navigate to `brave://extensions/`
+   - Enable "Developer mode" in the top right
+   - Click "Load unpacked" and select the `dist` directory
+   - The extension should now be installed and active
+
+### Creating a Distribution Package
+
+To create a zip file for distribution:
+
+```
+npm run build:zip
+```
+
+This creates a `tab-groups-manager.zip` file in the project root that can be used for distribution or uploading to extension stores.
 
 ### From Web Store (Coming Soon)
 
@@ -41,6 +60,7 @@ Once the extension is published to the Chrome Web Store, you can install it dire
    - Click "Add Pattern"
 3. Any tabs matching the pattern will be automatically grouped
 4. You can remove patterns by clicking the "Remove" button next to the pattern in the list
+5. Use the "Group Existing Tabs" button to manually process all currently ungrouped tabs
 
 ## Pattern Examples
 
@@ -130,6 +150,9 @@ To work on this extension:
    ```
 
 2. After making changes, refresh the extension in the extensions page
+   - Go to the extensions page (`brave://extensions/`)
+   - Find the Tab Groups Manager extension
+   - Click the refresh button for the extension
 
 ## License
 
