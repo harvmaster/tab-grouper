@@ -1,0 +1,26 @@
+{
+  "name": "tab-groups",
+  "version": "1.0.0",
+  "description": "Browser extension to automatically create tab groups based on domain patterns",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --config webpack.config.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "browser-extension",
+    "tab-groups",
+    "brave",
+    "chrome"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "^0.0.x",
+    "ts-loader": "^9.x.x",
+    "typescript": "^4.x.x",
+    "webpack": "^5.x.x",
+    "webpack-cli": "^4.x.x"
+  }
+}

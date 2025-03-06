@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tab Groups Manager</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    h1, h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    h2 {
+      font-size: 16px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+    
+    .form-group {
+      margin-bottom: 12px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    button:hover {
+      background-color: #3b78e7;
+    }
+    
+    .pattern-list {
+      margin-top: 15px;
+      max-height: 150px;
+      overflow-y: auto;
+      padding-top: 5px;
+    }
+    
+    .pattern-item {
+      padding: 8px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .pattern-info {
+      flex: 1;
+    }
+    
+    .pattern-actions button {
+      background-color: #f44336;
+      margin: 0;
+      padding: 5px 10px;
+      width: auto;
+      font-size: 12px;
+    }
+    
+    .color-preview {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    
+    .toggle-container label {
+      margin: 0;
+      flex: 1;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 24px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #4285f4;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #4285f4;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+    
+    .auto-pattern-info {
+      font-size: 12px;
+      color: #666;
+      margin: 5px 0 15px;
+      font-style: italic;
+    }
+    
+    .info-box {
+      font-size: 12px;
+      color: #555;
+      padding: 10px;
+      background-color: #f0f7ff;
+      border: 1px solid #d0e3ff;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    
+    .code {
+      font-family: monospace;
+      background-color: #eee;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    
+    .tabs-section {
+      margin-bottom: 15px;
+    }
+    
+    /* Manual Actions Styles */
+    .manual-actions {
+      margin: 15px 0;
+    }
+    
+    .manual-actions .info-box {
+      margin-top: 5px;
+      font-size: 11px;
+      padding: 8px;
+    }
+    
+    .info-icon {
+      display: inline-block;
+      margin-right: 3px;
+    }
+    
+    #groupExistingTabs {
+      background-color: #34a853;
+    }
+    
+    #groupExistingTabs:hover {
+      background-color: #2e964a;
+    }
+    
+    /* Debug Log Styles */
+    .debug-section {
+      margin-top: 30px;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+    }
+    
+    .debug-section h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    
+    .debug-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .debug-actions button {
+      width: auto;
+      margin: 0;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    
+    .log-container {
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    
+    .log-entry {
+      margin-bottom: 4px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    
+    .log-entry.error {
+      color: #d32f2f;
+    }
+    
+    .log-entry.warn {
+      color: #ff9800;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tab Groups Manager</h1>
+  
+  <div class="toggle-container">
+    <label for="autoPatterns">Auto-group by domain pattern:</label>
+    <label class="switch">
+      <input type="checkbox" id="autoPatterns" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+  
+  <div class="manual-actions">
+    <button id="groupExistingTabs">Group Existing Tabs</button>
+    <div class="info-box">
+      <span class="info-icon">ℹ️</span> Only groups ungrouped tabs using your patterns.
+    </div>
+  </div>
+  
+  <div class="tabs-section">
+    <h2>Auto-Pattern Templates</h2>
+    <div class="info-box">
+      Use <span class="code">:name</span> as a placeholder for the group name.<br>
+      Use <span class="code">*</span> as a wildcard for any subdomain part.<br>
+      Example: <span class="code">:name.*.example.com</span>
+    </div>
+    
+    <div class="form-group">
+      <label for="autoPatternTemplate">Domain Template:</label>
+      <input type="text" id="autoPatternTemplate" placeholder="e.g. :name.*.oracles.cash.mc.hzuccon.com">
+    </div>
+    
+    <button id="addAutoPattern">Add Auto-Pattern</button>
+    
+    <div class="pattern-list" id="autoPatternList">
+      <!-- Auto-pattern items will be added here dynamically -->
+    </div>
+  </div>
+  
+  <h2>Custom Manual Patterns</h2>
+  
+  <div class="form-group">
+    <label for="pattern">Domain Pattern (RegExp):</label>
+    <input type="text" id="pattern" placeholder="e.g. github\.com">
+  </div>
+  
+  <div class="form-group">
+    <label for="groupName">Group Name:</label>
+    <input type="text" id="groupName" placeholder="e.g. GitHub">
+  </div>
+  
+  <div class="form-group">
+    <label for="color">Group Color:</label>
+    <select id="color">
+      <option value="grey">Grey</option>
+      <option value="blue">Blue</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+      <option value="pink">Pink</option>
+      <option value="purple">Purple</option>
+      <option value="cyan">Cyan</option>
+    </select>
+  </div>
+  
+  <button id="addPattern">Add Manual Pattern</button>
+  
+  <div class="pattern-list" id="patternList">
+    <!-- Pattern items will be added here dynamically -->
+  </div>
+  
+  <!-- Debug Section -->
+  <div class="debug-section">
+    <h2>
+      Debug Logs
+      <div class="debug-actions">
+        <button id="refreshLogs">Refresh</button>
+        <button id="clearLogs">Clear</button>
+      </div>
+    </h2>
+    <div class="log-container" id="logContainer">
+      <!-- Log entries will be displayed here -->
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
