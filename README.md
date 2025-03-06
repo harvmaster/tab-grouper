@@ -52,6 +52,66 @@ Here are some examples of patterns you might use:
 - `.*\.google\.com` - Matches all Google subdomains
 - `(github|gitlab)\.com` - Matches both GitHub and GitLab
 
+## Auto-Pattern Templates
+
+The extension offers a powerful dynamic pattern matching system that allows you to create flexible rules for grouping tabs by domain structure:
+
+### How Auto-Patterns Work
+
+Auto-patterns use a special template syntax that automatically extracts the group name from the domain itself, allowing more dynamic grouping:
+
+- **`:name` placeholder**: Designates which part of the domain becomes the group name
+- **`*` wildcard**: Matches any subdomain segment (similar to `.*` in regex but simpler)
+
+### Examples of Auto-Pattern Templates
+
+- `:name.example.com` - Groups all example.com domains using the subdomain as the group name
+  - `dev.example.com` → "dev" group
+  - `staging.example.com` → "staging" group
+  
+- `:name.*.example.com` - Groups multi-level subdomains using the first level as the name
+  - `project.dev.example.com` → "project" group
+  - `app.staging.example.com` → "app" group
+
+- `*.example.:name` - Groups by TLD with the same domain name
+  - `example.com` → "com" group
+  - `example.org` → "org" group
+
+### Benefits Over Regular Patterns
+
+- **Reduced Configuration**: Create one template instead of multiple specific patterns
+- **Self-Organizing**: New subdomains are automatically grouped without additional configuration
+- **Context Preservation**: Keeps domain context in the group name for better organization
+
+### Manual Grouping Control
+
+For more control over tab grouping:
+
+- Use the "Group Existing Tabs" button to manually trigger grouping for all ungrouped tabs
+- This is useful when you want to batch-process tabs without waiting for automatic grouping
+- The extension only processes ungrouped tabs, preserving your manual organization
+
+## Performance Optimizations
+
+The extension includes several performance optimizations:
+
+### URL Caching
+
+- The extension caches processed URLs to avoid redundant pattern matching
+- When tabs are dragged or moved, the cache eliminates processing lag by:
+  - Storing the result of each URL's pattern matching
+  - Immediately retrieving cached results for previously seen URLs
+  - Skipping pattern evaluation for cached domains
+
+### Smart Tab Processing
+
+- Only processes ungrouped tabs, leaving your manually grouped tabs untouched
+- Skips internal browser pages (`chrome://`, `brave://`)
+- Focuses primarily on the active tab for URL changes
+- Groups tabs in the background to keep the UI responsive
+
+The cache is automatically cleared when patterns change or settings are updated, ensuring accurate grouping while maintaining performance.
+
 ## Browser Compatibility
 
 This extension has been tested on:
