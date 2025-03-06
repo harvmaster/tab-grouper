@@ -30,14 +30,8 @@ cp popup.html dist/
 cp manifest.json dist/
 cp icons/*.png dist/icons/
 
-# Change to the dist directory and zip everything
-cd dist
-zip -r ../tab-groups-manager.zip *
-cd ..
-
 echo "Build complete!"
 echo "The extension is ready in the 'dist' directory."
-echo "A zip file for distribution is available as 'tab-groups-manager.zip'."
 echo ""
 echo "To install the extension in Brave:"
 echo "1. Go to brave://extensions/"
